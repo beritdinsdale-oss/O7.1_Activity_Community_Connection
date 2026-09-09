@@ -30,78 +30,123 @@ label{font-weight:750;display:block;margin:15px 0 8px}textarea,input{width:100%;
 </div>
 </section>
 
-<section class="finish"><div class="eyebrow">After watching</div><h2>What stood out to you?</h2>
-<label for="collective">What did these examples show you about what people can accomplish together that would be difficult to accomplish alone?</label><textarea id="collective"></textarea>
+<section class="finish">
+<div class="eyebrow">After watching</div>
+<h2>What stood out to you?</h2>
+
+<label for="collective">What did these examples show you about what people can accomplish together that would be difficult to accomplish alone?</label>
+<textarea id="collective"></textarea>
+
 <p><strong>This is collective resilience:</strong> our ability to respond and adapt grows when people connect their knowledge, resources, spaces, and actions.</p>
-<label>Which case appealed to you most?</label><div class="grid" id="cases">
-<button type="button" class="choice" data-value="Depave"><strong>🌱 Depave</strong><span class="small">Transforming shared spaces</span></button>
-<button type="button" class="choice" data-value="Pollinator habitat"><strong>🐝 Pollinator habitat</strong><span class="small">Connecting habitat across a landscape</span></button>
-<button type="button" class="choice" data-value="PDX Solarpunx"><strong>🌻 PDX Solarpunx</strong><span class="small">Building community through gardening</span></button></div>
-<label for="why">What about it interested you?</label><textarea id="why"></textarea>
-<label>What kinds of action would you like to explore next? <span class="small">(Choose as many as fit.)</span></label><div class="grid" id="interests">
-<button type="button" class="choice" data-value="Pollinators & habitat"><strong>🐝 Pollinators & habitat</strong></button><button type="button" class="choice" data-value="Climate-resilient planting"><strong>🌿 Climate-resilient planting</strong></button><button type="button" class="choice" data-value="Transforming shared spaces"><strong>🏘️ Transforming shared spaces</strong></button><button type="button" class="choice" data-value="Water & climate challenges"><strong>💧 Water & climate challenges</strong></button><button type="button" class="choice" data-value="Trees, shade & heat"><strong>🌳 Trees, shade & heat</strong></button><button type="button" class="choice" data-value="Building community"><strong>🤝 Building community</strong></button><button type="button" class="choice" data-value="Sharing plants, knowledge & resources"><strong>🌱 Sharing plants, knowledge & resources</strong></button><button type="button" class="choice" data-value="Community science"><strong>🔎 Community science</strong></button>
-</div><button type="button" class="btn" id="continue">Save & continue to Activity 7.2 →</button><span class="saved" id="status" aria-live="polite"></span></section>
+
+<div style="margin-top:30px;padding-top:22px;border-top:2px dashed #c9b98c">
+  <h2>1. Which case appealed to you most?</h2>
+  <p class="small">Choose one. Your next choices will change based on the case you select.</p>
+  <div class="grid" id="cases">
+    <button type="button" class="choice" data-value="Depave"><strong>🌱 Depave</strong><span class="small">Transforming shared spaces</span></button>
+    <button type="button" class="choice" data-value="Pollinator habitat"><strong>🐝 Pollinator habitat</strong><span class="small">Connecting habitat across a landscape</span></button>
+    <button type="button" class="choice" data-value="PDX Solarpunx"><strong>🌻 PDX Solarpunx</strong><span class="small">Grassroots gardening & community</span></button>
+  </div>
+</div>
+
+<div id="step2" class="hidden" style="margin-top:30px;padding-top:22px;border-top:2px dashed #c9b98c">
+  <h2>2. What about that kind of collective action interested you?</h2>
+  <p class="small">Choose one or two. These options are tied to the case you selected above.</p>
+  <div class="grid" id="qualities">
+    <p class="small">Choose a case above to see your options.</p>
+  </div>
+</div>
+
+<div id="step3" class="hidden" style="margin-top:30px;padding-top:22px;border-top:2px dashed #c9b98c">
+  <h2>3. Where would you most like to take action?</h2>
+  <p class="small">Choose one or two climate or gardening issues. In Activity 7.2, we'll combine these with what interested you about the case study.</p>
+  <div class="grid" id="interests">
+    <button type="button" class="choice" data-value="Pollinators & habitat"><strong>🐝 Pollinators & habitat</strong></button>
+    <button type="button" class="choice" data-value="Climate-resilient planting"><strong>🌿 Climate-resilient planting</strong></button>
+    <button type="button" class="choice" data-value="Transforming shared spaces"><strong>🏘️ Transforming shared spaces</strong></button>
+    <button type="button" class="choice" data-value="Water & climate challenges"><strong>💧 Water & climate challenges</strong></button>
+    <button type="button" class="choice" data-value="Trees, shade & heat"><strong>🌳 Trees, shade & heat</strong></button>
+    <button type="button" class="choice" data-value="Soil & water retention"><strong>🌾 Soil & water retention</strong></button>
+    <button type="button" class="choice" data-value="Food & garden resilience"><strong>🥕 Food & garden resilience</strong></button>
+  </div>
+</div>
+
+<button type="button" class="btn hidden" id="continue">Save & continue to Activity 7.2 →</button>
+<span class="saved" id="status" aria-live="polite"></span>
+</section>
 </main><script>
-const KEY="module7_activity7_1_collective_resilience", JOURNAL="climateResilientGardenJournal";let chosenCase="",interests=[];
-
-// Preferred case — choose one
-document.querySelectorAll("#cases .choice").forEach(button => {
-  button.setAttribute("aria-pressed", "false");
-  button.addEventListener("click", function () {
-    document.querySelectorAll("#cases .choice").forEach(b => {
-      b.classList.remove("on");
-      b.setAttribute("aria-pressed", "false");
-    });
-    this.classList.add("on");
-    this.setAttribute("aria-pressed", "true");
-    chosenCase = this.dataset.value;
-  });
-});
-
-// Interests — choose as many as apply
-document.querySelectorAll("#interests .choice").forEach(button => {
-  button.setAttribute("aria-pressed", "false");
-  button.addEventListener("click", function () {
-    const value = this.dataset.value;
-    const index = interests.indexOf(value);
-
-    if (index >= 0) {
-      interests.splice(index, 1);
-      this.classList.remove("on");
-      this.setAttribute("aria-pressed", "false");
-    } else {
-      interests.push(value);
-      this.classList.add("on");
-      this.setAttribute("aria-pressed", "true");
-    }
-  });
-});
-
-function save(){
-  const d={
-    module:7,
-    activity:"7.1",
-    title:"What Can We Accomplish Together?",
-    completedAt:new Date().toISOString(),
-    collectiveReflection:document.getElementById("collective").value,
-    preferredCase:chosenCase,
-    whyItAppealed:document.getElementById("why").value,
-    interests:[...interests]
-  };
-  localStorage.setItem(KEY,JSON.stringify(d));
-  let j={};
-  try {
-    j=JSON.parse(localStorage.getItem(JOURNAL)||"{}");
-  } catch(e) {
-    j={};
+const KEY="module7_activity7_1_collective_resilience", JOURNAL="climateResilientGardenJournal";
+let chosenCase="", qualities=[], interests=[];
+const qualityOptions={
+"Depave":["Social & environmental justice","Transforming shared or public spaces","Hands-on community projects","Neighborhood-scale change","Working with community partners"],
+"Pollinator habitat":["Contributing to community science","Connecting individual actions across a landscape","Restoring habitat together","Learning through observation & data","Working toward a shared ecological goal"],
+"PDX Solarpunx":["Queer & inclusive community spaces","Grassroots community-led action","Sharing plants, skills & resources","Building relationships through gardening","Informal ways to get involved"]
+};
+function press(b,on){b.classList.toggle("on",on);b.setAttribute("aria-pressed",on?"true":"false")}
+function selectedQualities(){
+  const vals=[...qualities];
+  const otherButton=document.getElementById("otherQualityButton");
+  const otherInput=document.getElementById("otherQuality");
+  if(otherButton && otherButton.getAttribute("aria-pressed")==="true" && otherInput && otherInput.value.trim()){
+    vals.push("Other: "+otherInput.value.trim());
   }
-  if(!j.entries) j.entries={};
-  j.entries[KEY]=d;
-  j.updatedAt=d.completedAt;
-  localStorage.setItem(JOURNAL,JSON.stringify(j));
-  return d;
+  return vals.slice(0,2);
 }
-document.getElementById("continue").addEventListener("click", function(){
+function updateProgress(){
+  const vals=selectedQualities();
+  const step3=document.getElementById("step3");
+  if(vals.length>0){
+    step3.classList.remove("hidden");
+  }else{
+    step3.classList.add("hidden");
+    document.getElementById("continue").classList.add("hidden");
+  }
+}
+function renderQualities(){
+ const box=document.getElementById("qualities"); box.innerHTML=""; qualities=[];
+ if(!chosenCase){box.innerHTML='<p class="small">Choose a case above to see the options.</p>';return}
+ qualityOptions[chosenCase].forEach(v=>{
+  const b=document.createElement("button");b.type="button";b.className="choice";b.setAttribute("aria-pressed","false");b.innerHTML="<strong>"+v+"</strong>";
+  b.onclick=()=>{const i=qualities.indexOf(v);if(i>=0){qualities.splice(i,1);press(b,false)}else if(qualities.length<2){qualities.push(v);press(b,true)}
+    updateProgress();
+  };
+  box.appendChild(b);
+ });
+
+ const otherWrap=document.createElement("div");
+ otherWrap.style.gridColumn="1 / -1";
+ otherWrap.innerHTML='<button type="button" class="choice" id="otherQualityButton" aria-pressed="false"><strong>Other</strong><span class="small">Something else about this case interested me</span></button><div id="otherQualityField" class="hidden" style="margin-top:10px"><label for="otherQuality">What interested you?</label><input id="otherQuality" type="text"></div>';
+ box.appendChild(otherWrap);
+
+ const otherButton=otherWrap.querySelector("#otherQualityButton");
+ const otherField=otherWrap.querySelector("#otherQualityField");
+ const otherInput=otherWrap.querySelector("#otherQuality");
+
+ otherButton.onclick=()=>{
+   const active=otherButton.getAttribute("aria-pressed")==="true";
+   if(active){
+     press(otherButton,false);
+     otherField.classList.add("hidden");
+     otherInput.value="";
+   }else if(qualities.length<2){
+     press(otherButton,true);
+     otherField.classList.remove("hidden");
+     otherInput.focus();
+   }
+   updateProgress();
+ };
+ otherInput.addEventListener("input",updateProgress);
+}
+document.querySelectorAll("#cases .choice").forEach(b=>{b.setAttribute("aria-pressed","false");b.onclick=()=>{document.querySelectorAll("#cases .choice").forEach(x=>press(x,false));interests=[];document.querySelectorAll("#interests .choice").forEach(x=>press(x,false));document.getElementById("step3").classList.add("hidden");document.getElementById("continue").classList.add("hidden");press(b,true);chosenCase=b.dataset.value;renderQualities();document.getElementById("step2").classList.remove("hidden");document.getElementById("step2").scrollIntoView({behavior:"smooth",block:"start"})}});
+document.querySelectorAll("#interests .choice").forEach(b=>{b.setAttribute("aria-pressed","false");b.onclick=()=>{const v=b.dataset.value,i=interests.indexOf(v);if(i>=0){interests.splice(i,1);press(b,false)}else if(interests.length<2){interests.push(v);press(b,true)}
+document.getElementById("continue").classList.toggle("hidden",interests.length===0);
+}});
+function save(){
+ const d={module:7,activity:"7.1",title:"What Can We Accomplish Together?",completedAt:new Date().toISOString(),collectiveReflection:document.getElementById("collective").value,preferredCase:chosenCase,caseQualities:selectedQualities(),interests:[...interests]};
+ localStorage.setItem(KEY,JSON.stringify(d));let j={};try{j=JSON.parse(localStorage.getItem(JOURNAL)||"{}")}catch(e){j={}}if(!j.entries)j.entries={};j.entries[KEY]=d;j.updatedAt=d.completedAt;localStorage.setItem(JOURNAL,JSON.stringify(j));return d
+}
+document.getElementById("continue").addEventListener("click",()=>{
+  if(!chosenCase || selectedQualities().length===0 || interests.length===0) return;
   save();
   location.href="https://beritdinsdale-oss.github.io/O7.2_Assessment-Activity_Community_Connections/";
 });
