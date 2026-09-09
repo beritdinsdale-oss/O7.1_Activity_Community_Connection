@@ -1,258 +1,47 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Find Your Community Connection</title>
-  <style>
-    :root{
-      --ink:#23322a; --muted:#617066; --paper:#fbfaf5; --card:#fffefa; --line:#d8ddd6;
-      --accent:#2f6d4f; --accent-soft:#e8f1eb; --gold:#d6a64b; --blue:#6e9ba5; --rose:#b97b7c;
-      --shadow:0 8px 24px rgba(38,58,46,.08); --radius:22px;
-    }
-    *{box-sizing:border-box} html{scroll-behavior:smooth}
-    body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink);font-size:18px;line-height:1.55}
-    button,input,textarea{font:inherit} button{cursor:pointer}
-    a{color:#215b45;font-weight:700;text-underline-offset:3px}
-    .page{max-width:1000px;margin:0 auto;padding:28px 18px 56px}
-    .hero{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:28px;align-items:center;margin-bottom:24px}
-    .eyebrow{font-size:.9rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-    h1{font-size:clamp(2rem,5vw,3.7rem);line-height:1.05;margin:.2em 0 .35em;font-family:Georgia,serif;font-weight:700}
-    h2{font-size:1.55rem;line-height:1.2;margin:0 0 8px;font-family:Georgia,serif}
-    h3{font-size:1.08rem;margin:0 0 8px}
-    .hero-art{min-height:190px;border:1px solid var(--line);border-radius:34px;background:linear-gradient(145deg,#f3f0df,#edf4ec);position:relative;overflow:hidden;box-shadow:var(--shadow)}
-    .hill{position:absolute;border-radius:50% 50% 0 0;bottom:-30px}.h1{width:330px;height:150px;left:-65px;background:#b8cfad}.h2{width:300px;height:125px;right:-80px;background:#91b69b}.house{position:absolute;width:80px;height:58px;left:90px;bottom:72px;background:#f6e5c8;border:3px solid #876d52}.roof{position:absolute;left:78px;bottom:127px;border-left:52px solid transparent;border-right:52px solid transparent;border-bottom:48px solid #a96757}.tree{position:absolute;right:55px;bottom:58px;font-size:72px}.flowers{position:absolute;left:20px;bottom:18px;font-size:44px;letter-spacing:3px}
-    .progress{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:20px 0 28px}.progress span{height:8px;border-radius:999px;background:var(--line)}.progress span.on{background:var(--accent)}
-    .step{display:none}.step.active{display:block}.intro{color:var(--muted);max-width:760px;margin-top:0}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.choice,.route{border:2px solid var(--line);background:var(--card);border-radius:var(--radius);padding:18px;text-align:left;min-height:136px;box-shadow:0 2px 0 rgba(0,0,0,.02);transition:.15s ease}.choice:hover,.route:hover{transform:translateY(-2px);border-color:#aebcaf}.choice[aria-pressed="true"],.route[aria-expanded="true"]{border-color:var(--accent);background:var(--accent-soft)}
-    .icon{font-size:1.8rem;display:block;margin-bottom:5px}.small{font-size:.92rem;color:var(--muted)}
-    .actions{display:flex;gap:12px;justify-content:space-between;align-items:center;flex-wrap:wrap;margin-top:24px}.btn{border:2px solid var(--line);background:var(--card);color:var(--ink);padding:12px 18px;border-radius:14px;font-weight:800;min-height:48px}.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn:disabled{opacity:.45;cursor:not-allowed}
-    .path-card{border:1px solid var(--line);background:var(--card);border-radius:var(--radius);padding:18px;margin:12px 0}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{background:#f1f2ec;border:1px solid var(--line);border-radius:999px;padding:7px 11px;font-size:.88rem}
-    .note{border-left:5px solid var(--gold);background:#f8f4e7;border-radius:0 16px 16px 0;padding:16px 18px;margin:18px 0}.route-panel{display:none;margin-top:16px;border:1px solid var(--line);background:#f6f7f2;border-radius:var(--radius);padding:18px}.route-panel.active{display:block}
-    .resource{display:flex;gap:12px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0}.resource .icon{margin:0}.divider{border:0;border-top:1px solid var(--line);margin:18px 0}
-    .record{margin-top:20px;border:2px dashed #bdc8bd;border-radius:var(--radius);padding:20px;background:#fffefa}.record.hidden{display:none}label{font-weight:800;display:block;margin-bottom:6px}.field{margin-bottom:16px}input[type=text],textarea{width:100%;border:2px solid var(--line);border-radius:13px;padding:12px 13px;background:white;color:var(--ink);min-height:48px}textarea{resize:vertical}.checkline{display:flex;gap:10px;align-items:flex-start;font-weight:500}.checkline input{margin-top:7px;transform:scale(1.2)}
-    .map{max-width:640px;margin:20px auto}.node{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:var(--shadow)}.node.center{text-align:center}.arrow{text-align:center;font-size:1.5rem;color:var(--muted);padding:5px}.save-status{border-left:5px solid var(--accent);background:var(--accent-soft);border-radius:0 16px 16px 0;padding:16px 18px;margin-top:20px}.save-status.error{border-color:#9b493f;background:#f6e9e6}.label{font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:800}
-    .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{outline:4px solid #f0b84e;outline-offset:3px}
-    @media(max-width:720px){body{font-size:17px}.hero{grid-template-columns:1fr}.hero-art{min-height:155px}.grid{grid-template-columns:1fr}.page{padding:20px 14px 45px}}
-    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
-  </style>
-</head>
-<body>
-<main class="page" id="app">
-  <header class="hero">
-    <div>
-      <div class="eyebrow">Module 7 · Community notebook</div>
-      <h1>Find Your Community Connection</h1>
-      <p>Climate-resilient gardening doesn’t stop at the garden gate. Follow something you care about outward and see who is already working on it with others.</p>
-    </div>
-    <div class="hero-art" aria-hidden="true"><div class="hill h1"></div><div class="hill h2"></div><div class="house"></div><div class="roof"></div><div class="tree">🌳</div><div class="flowers">🌼🌱</div></div>
-  </header>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>What Can We Accomplish Together?</title><style>
+:root{--ink:#29372f;--paper:#fffaf0;--line:#d8cfb7;--green:#355d43;--rust:#a64b2a;--gold:#e5b85c;--blue:#e4f0f1}
+*{box-sizing:border-box}body{margin:0;background:#e9e2cf;color:var(--ink);font:18px/1.55 system-ui,Segoe UI,sans-serif}main{max-width:980px;margin:auto;background:var(--paper);padding:32px 28px 60px;min-height:100vh}
+.hero,.card,.finish{border:2px solid var(--line);border-radius:24px;padding:30px;margin-bottom:28px;background:#fff}.hero{background:linear-gradient(135deg,#fffaf0,#edf3e7)}
+h1,h2{font-family:Georgia,serif;color:#314f3b}h1{font-size:clamp(2.3rem,5vw,4rem);line-height:1.05}.eyebrow{font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--rust)}
+.casehead{display:flex;gap:15px;align-items:center}.icon{font-size:32px;background:#f4edd8;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;flex:none}.video{width:100%;aspect-ratio:16/9;border:0;border-radius:15px;background:#222}video{width:100%;border-radius:15px;background:#222}
+.note{border-left:5px solid var(--gold);background:#f5efe0;padding:14px 17px;border-radius:8px;margin:16px 0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.choice{border:2px solid var(--line);border-radius:15px;padding:16px;background:#fff;text-align:left;font:inherit;cursor:pointer}.choice.on{border-color:var(--green);background:#edf4ee}.choice strong{display:block}.small,.credit{font-size:.84rem;color:#606860}
+label{font-weight:750;display:block;margin:15px 0 8px}textarea,input{width:100%;padding:11px;border:2px solid #b8b09c;border-radius:9px;font:inherit;background:#fff}textarea{min-height:110px}.finish{background:var(--blue)}button.btn,a.btn{display:inline-block;background:var(--green);color:#fff;border:0;border-radius:999px;padding:12px 20px;font-weight:750;font-size:1rem;text-decoration:none;cursor:pointer;margin-top:12px}.path{background:#f7f4ea;border-radius:14px;padding:16px;margin:12px 0}.saved{font-weight:700;margin-left:10px}.hidden{display:none}
+@media(max-width:700px){main{padding:15px}.grid{grid-template-columns:1fr}.hero,.card,.finish{padding:20px}}
+</style></head><body><main>
+<section class="hero"><div class="eyebrow">Module 7 · Activity 7.1</div><h1>What can we accomplish together?</h1><p>You've spent this course thinking about choices in individual gardens. Now zoom out. Watch three examples of people responding together to climate and ecological challenges.</p><p><strong>You don't need to take notes on every video.</strong> Notice what people accomplish together—and which kind of action draws you in.</p></section>
 
-  <div class="progress" aria-label="Activity progress"><span id="p1" class="on"></span><span id="p2"></span><span id="p3"></span><span id="p4"></span></div>
+<section class="card"><div class="casehead"><div class="icon">🌱</div><div><div class="eyebrow">Case 1 · Portland</div><h2>From pavement to living space</h2></div></div><p>Depave brings people together to turn unnecessary pavement into greener, more resilient places.</p><iframe class="video" src="https://player.vimeo.com/video/995207088" title="Depave: This Garden Was a Parking Lot" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe><p class="small"><a href="https://vimeo.com/995207088" target="_blank" rel="noopener">Video not playing? Open it in a new tab.</a></p></section>
 
-  <section class="step active" data-step="1">
-    <h2>1. What draws your attention?</h2>
-    <p class="intro">Choose one or two areas you’d be interested in connecting with beyond your own garden.</p>
-    <div id="interests" class="grid">
-      <button class="choice" type="button" data-value="Pollinators & wildlife" aria-pressed="false"><span class="icon">🐝</span><strong>Pollinators & wildlife</strong><div class="small">Habitat, native plants, biodiversity</div></button>
-      <button class="choice" type="button" data-value="Water" aria-pressed="false"><span class="icon">💧</span><strong>Water</strong><div class="small">Conservation, watersheds, rain gardens</div></button>
-      <button class="choice" type="button" data-value="Food & gardening" aria-pressed="false"><span class="icon">🥕</span><strong>Food & gardening</strong><div class="small">Community gardens, food access, seed sharing</div></button>
-      <button class="choice" type="button" data-value="Trees & shade" aria-pressed="false"><span class="icon">🌳</span><strong>Trees & shade</strong><div class="small">Cooling, urban forestry, neighborhood greening</div></button>
-      <button class="choice" type="button" data-value="Soil & compost" aria-pressed="false"><span class="icon">🍂</span><strong>Soil & compost</strong><div class="small">Soil health, composting, waste reduction</div></button>
-      <button class="choice" type="button" data-value="Helping other gardeners" aria-pressed="false"><span class="icon">🧑‍🌾</span><strong>Helping other gardeners</strong><div class="small">Education, demonstration gardens, mentoring</div></button>
-    </div>
-    <div class="actions"><span></span><button id="next1" class="btn primary" type="button" disabled>See where this could lead →</button></div>
-  </section>
+<section class="card"><div class="casehead"><div class="icon">🐝</div><div><div class="eyebrow">Case 2 · Connected habitat</div><h2>Protecting pollinators from habitat fragmentation</h2></div></div><p>Look for what changes when habitat and information extend beyond one garden.</p><iframe class="video" src="https://www.youtube.com/embed/3mtrgQrHaL4" title="Protecting Pollinators from Habitat Fragmentation | Field Notes on Climate" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><p class="small"><a href="https://www.youtube.com/watch?v=3mtrgQrHaL4" target="_blank" rel="noopener">Video not playing? Open it in a new tab.</a></p></section>
 
-  <section class="step" data-step="2">
-    <h2>2. Where might people be working on this?</h2>
-    <p class="intro">The work you care about may be happening under a name you wouldn’t expect.</p>
-    <div id="possibilities"></div>
-    <div class="note"><strong>Look beyond “climate” organizations.</strong><br>Community gardens, habitat projects, watershed groups, libraries, parks programs, Extension programs, garden clubs, and informal networks may all be contributing to resilience.</div>
-    <div class="actions"><button class="btn back" type="button">← Back</button><button id="next2" class="btn primary" type="button">Choose how to explore →</button></div>
-  </section>
+<section class="card"><div class="casehead"><div class="icon">🌻</div><div><div class="eyebrow">Case 3 · Portland</div><h2>Neighbors growing climate action</h2></div></div><p>PDX Solarpunx shows people finding one another, sharing resources, and gardening together.</p><div class="note"><strong>A note as you watch:</strong> This group places a strong emphasis on native plants. Native plants can provide important ecological benefits, but as you've learned, being native doesn't necessarily mean a plant will remain well suited as climate conditions change.</div>
+<div style="border:2px dashed var(--line);border-radius:16px;padding:24px;background:#faf6e9;text-align:center;margin-top:16px">
+  <div style="font-size:2.5rem" aria-hidden="true">🌻🤝</div>
+  <h3 style="font-family:Georgia,serif;color:#314f3b;margin:.4rem 0">Watch the PDX Solarpunx Reel</h3>
+  <p style="max-width:680px;margin:0 auto 12px">The Reel opens on Instagram in a new tab. When you're finished, return here to continue the activity.</p>
+  <a class="btn" href="https://www.instagram.com/reel/DcHsBBBg3pe/?utm_source=ig_web_copy_link&stkn=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener">Watch on Instagram ↗</a>
+  <p class="credit" style="margin-top:14px">Video shot and edited by @jooptho.</p>
+</div>
+<div class="note">
+  <strong>Can’t access Instagram?</strong> The short video shows PDX Solarpunx, a diverse Portland-area gardening collective whose members share plants, knowledge, resources, and work together around climate and ecological concerns.
+</div>
+</section>
 
-  <section class="step" data-step="3">
-    <h2>3. Follow a thread into your community</h2>
-    <p class="intro">There’s more than one way to find people doing this work. Choose a route that makes sense for you.</p>
-    <div class="grid" id="routes">
-      <button class="route" type="button" data-route="know" aria-expanded="false"><span class="icon">💭</span><strong>I already know of something</strong><div class="small">Start with a group, project, program, or network already on your radar.</div></button>
-      <button class="route" type="button" data-route="ask" aria-expanded="false"><span class="icon">🗣️</span><strong>Ask someone</strong><div class="small">Let another person point you toward something happening nearby.</div></button>
-      <button class="route" type="button" data-route="look" aria-expanded="false"><span class="icon">👀</span><strong>Look around</strong><div class="small">Start with projects and activities you may already have noticed.</div></button>
-      <button class="route" type="button" data-route="search" aria-expanded="false"><span class="icon">🔎</span><strong>Search online</strong><div class="small">Use a larger network or a focused local search as your doorway.</div></button>
-    </div>
-
-    <div id="know" class="route-panel"><h3>Start with what you already know</h3><p>Think broadly: a community garden, garden club, restoration project, seed exchange, parks program, Extension program, or informal network can count. What matters is that people are working together on something connected to resilience.</p></div>
-    <div id="ask" class="route-panel"><h3>Who could point you in the right direction?</h3><p>Try another gardener, neighbor, librarian, Extension contact, conservation district staff member, or someone involved in a local garden or park.</p><div class="path-card"><div class="small">A question you could ask:</div><strong>“Do you know of people around here working on <span id="askTopic">climate-resilient gardening</span>?”</strong></div></div>
-    <div id="look" class="route-panel"><h3>Think about what you’ve already seen</h3><p>Have you noticed any of these around your community?</p><div class="chips"><span class="chip">community garden</span><span class="chip">native planting</span><span class="chip">tree planting</span><span class="chip">seed exchange</span><span class="chip">restoration project</span><span class="chip">garden workshop</span></div><p class="small">A sign, newsletter, library display, event notice, demonstration garden, or conversation can be a clue.</p></div>
-    <div id="search" class="route-panel">
-      <h3>Use a larger network as a doorway</h3>
-      <p class="small">These organizations can lead you toward chapters, state programs, or other resources closer to home. You don’t have to join one—use them as starting points.</p>
-      <div class="resource"><span class="icon">🌱</span><div><a href="https://wildones.org/chapters/" target="_blank" rel="noopener">Wild Ones chapter finder</a><div class="small">Local chapters focused on native plants, natural landscapes, and habitat.</div></div></div>
-      <div class="resource"><span class="icon">🐦</span><div><a href="https://www.audubon.org/about/audubon-near-you" target="_blank" rel="noopener">Audubon Near You</a><div class="small">Find chapters and other local connections related to birds and habitat.</div></div></div>
-      <div class="resource"><span class="icon">🌿</span><div><strong>State or regional native plant societies</strong><div class="small">Many have local chapters. Try searching for “native plant society” plus your state or region.</div></div></div>
-      <div class="resource"><span class="icon">🧑‍🌾</span><div><a href="https://mastergardener.extension.org/contact-us/find-a-program/" target="_blank" rel="noopener">Extension Master Gardener program finder</a><div class="small">Find state programs that can lead to county and regional gardening networks.</div></div></div>
-      <hr class="divider">
-      <h3>Or try a local doorway</h3>
-      <p class="small">Pair your town, county, or region with a phrase like:</p>
-      <div class="chips"><span class="chip">watershed council</span><span class="chip">soil and water conservation district</span><span class="chip">community garden</span><span class="chip">native plants</span><span class="chip">tree planting</span><span class="chip">seed library</span><span class="chip">habitat restoration</span></div>
-    </div>
-
-    <div id="record" class="record hidden">
-      <h3>Add one connection you found</h3>
-      <div class="field"><label for="name">Who or what did you find?</label><input id="name" type="text" placeholder="Group, project, program, or network"></div>
-      <div class="field"><label for="work">What are people doing together?</label><textarea id="work" rows="3" placeholder="A short description is enough"></textarea></div>
-      <div class="field"><label for="why">What connects this work to something you care about?</label><textarea id="why" rows="2"></textarea></div>
-      <label class="checkline"><input id="wider" type="checkbox"><span>I found a county, regional, statewide, or online community rather than something very local.</span></label>
-    </div>
-    <p id="message" class="small" role="status" aria-live="polite"></p>
-    <div class="actions"><button class="btn back" type="button">← Back</button><button id="next3" class="btn primary" type="button" disabled>Build my connection map →</button></div>
-  </section>
-
-  <section class="step" data-step="4">
-    <h2>4. Your community connection</h2>
-    <p class="intro">You followed something you care about beyond your own garden and found people working on it together.</p>
-    <div class="map">
-      <div class="node center"><div class="icon">🌱</div><div class="label">Something I care about</div><strong id="sInterest"></strong></div>
-      <div class="arrow" aria-hidden="true">↓</div>
-      <div class="node center"><div class="icon">🤝</div><div class="label">A community connection</div><strong id="sName"></strong></div>
-      <div class="arrow" aria-hidden="true">↓</div>
-      <div class="node"><div class="label">What people are doing together</div><div id="sWork"></div></div>
-      <div class="arrow" aria-hidden="true">↓</div>
-      <div class="node"><div class="label">Why it caught my attention</div><div id="sWhy"></div></div>
-    </div>
-    <div id="saveStatus" class="save-status" role="status" aria-live="polite"><strong>Saved to your Garden Journal.</strong><br><span class="small">Your interests and community connection have been stored for Module 7 so you can return to them later.</span></div>
-    <div class="note"><strong>Keep this connection.</strong><br>Next, you’ll look for evidence of what this group, project, or network has accomplished through people working together.</div>
-    <div class="actions"><button class="btn back" type="button">← Back</button><button id="restart" class="btn" type="button">Start over</button></div>
-  </section>
-</main>
-
-<script>
-(() => {
-  const app = document.getElementById('app');
-  const JOURNAL_KEY = 'climateResilientGardenJournal';
-  const ENTRY_ID = 'module7_activity7_1_community_connection';
-  let step = 1;
-  let interests = [];
-  let selectedRoute = '';
-
-  const pathwayData = {
-    'Pollinators & wildlife':['Native plant or habitat groups','Pollinator projects','Parks or natural-area programs','Watershed or restoration groups'],
-    'Water':['Watershed councils','Soil and Water Conservation Districts','Rain-garden or stormwater programs','Community gardens'],
-    'Food & gardening':['Community gardens','Seed libraries or exchanges','Food-access projects','Garden clubs or Extension programs'],
-    'Trees & shade':['Urban forestry programs','Tree-planting projects','Neighborhood greening efforts','Parks programs'],
-    'Soil & compost':['Composting programs','Community gardens','Food-waste initiatives','Soil-health education groups'],
-    'Helping other gardeners':['Extension or Master Gardener programs','Garden clubs','Demonstration gardens','Libraries or community education programs']
-  };
-
-  function showStep(n){
-    step = Math.max(1, Math.min(4, n));
-    document.querySelectorAll('.step').forEach(el => el.classList.toggle('active', Number(el.dataset.step) === step));
-    for(let i=1;i<=4;i++) document.getElementById('p'+i).classList.toggle('on', i<=step);
-    window.scrollTo({top:0, behavior:'smooth'});
-  }
-
-  function saveJournalEntry(entry){
-    const status = document.getElementById('saveStatus');
-    try{
-      let journal = {};
-      const existing = localStorage.getItem(JOURNAL_KEY);
-      if(existing){
-        const parsed = JSON.parse(existing);
-        if(parsed && typeof parsed === 'object') journal = parsed;
-      }
-      if(!journal.entries || typeof journal.entries !== 'object') journal.entries = {};
-      journal.entries[ENTRY_ID] = entry;
-      journal.updatedAt = new Date().toISOString();
-      localStorage.setItem(JOURNAL_KEY, JSON.stringify(journal));
-      localStorage.setItem(ENTRY_ID, JSON.stringify(entry));
-      status.classList.remove('error');
-      status.innerHTML = '<strong>Saved to your Garden Journal.</strong><br><span class="small">Your interests and community connection have been stored for Module 7 so you can return to them later.</span>';
-    }catch(err){
-      status.classList.add('error');
-      status.innerHTML = '<strong>Your journal entry could not be saved automatically in this browser.</strong><br><span class="small">Your responses will remain visible on this page for this session.</span>';
-    }
-  }
-
-  document.querySelectorAll('.choice').forEach(btn => btn.addEventListener('click', () => {
-    const value = btn.dataset.value;
-    const on = btn.getAttribute('aria-pressed') === 'true';
-    if(on){ interests = interests.filter(x => x !== value); btn.setAttribute('aria-pressed','false'); }
-    else if(interests.length < 2){ interests.push(value); btn.setAttribute('aria-pressed','true'); }
-    document.getElementById('next1').disabled = interests.length === 0;
-  }));
-
-  document.getElementById('next1').addEventListener('click', () => {
-    const box = document.getElementById('possibilities'); box.innerHTML='';
-    interests.forEach(topic => {
-      const card = document.createElement('div'); card.className='path-card';
-      const title = document.createElement('h3'); title.textContent=topic; card.appendChild(title);
-      const chips = document.createElement('div'); chips.className='chips';
-      pathwayData[topic].forEach(item => { const c=document.createElement('span'); c.className='chip'; c.textContent=item; chips.appendChild(c); });
-      card.appendChild(chips); box.appendChild(card);
-    });
-    showStep(2);
-  });
-
-  document.getElementById('next2').addEventListener('click', () => {
-    document.getElementById('askTopic').textContent = interests.join(' or ').toLowerCase();
-    showStep(3);
-  });
-
-  document.querySelectorAll('.route').forEach(btn => btn.addEventListener('click', () => {
-    selectedRoute = btn.dataset.route;
-    document.querySelectorAll('.route').forEach(x => x.setAttribute('aria-expanded', x === btn ? 'true':'false'));
-    document.querySelectorAll('.route-panel').forEach(x => x.classList.toggle('active', x.id === selectedRoute));
-    document.getElementById('record').classList.remove('hidden');
-    document.getElementById('next3').disabled = false;
-  }));
-
-  document.getElementById('next3').addEventListener('click', () => {
-    const name = document.getElementById('name').value.trim();
-    const work = document.getElementById('work').value.trim();
-    const why = document.getElementById('why').value.trim();
-    if(!name || !work || !why){ document.getElementById('message').textContent='Add a short response to all three prompts before continuing.'; return; }
-    document.getElementById('message').textContent='';
-    document.getElementById('sInterest').textContent=interests.join(' + ');
-    document.getElementById('sName').textContent=name;
-    document.getElementById('sWork').textContent=work;
-    document.getElementById('sWhy').textContent=why;
-
-    saveJournalEntry({
-      id: ENTRY_ID,
-      module: 7,
-      activity: '7.1',
-      title: 'Find Your Community Connection',
-      completed: true,
-      completedAt: new Date().toISOString(),
-      interests: interests,
-      discoveryRoute: selectedRoute,
-      connection: {
-        name: name,
-        collectiveWork: work,
-        personalConnection: why,
-        broaderThanLocal: document.getElementById('wider').checked
-      }
-    });
-    showStep(4);
-  });
-
-  document.querySelectorAll('.back').forEach(btn => btn.addEventListener('click', () => showStep(step-1)));
-
-  document.getElementById('restart').addEventListener('click', () => {
-    interests=[]; selectedRoute='';
-    document.querySelectorAll('.choice').forEach(b => b.setAttribute('aria-pressed','false'));
-    document.querySelectorAll('.route').forEach(b => b.setAttribute('aria-expanded','false'));
-    document.querySelectorAll('.route-panel').forEach(x => x.classList.remove('active'));
-    ['name','work','why'].forEach(id => document.getElementById(id).value='');
-    document.getElementById('wider').checked=false;
-    document.getElementById('record').classList.add('hidden');
-    document.getElementById('next1').disabled=true;
-    document.getElementById('next3').disabled=true;
-    showStep(1);
-  });
-})();
-</script>
-</body>
-</html>
+<section class="finish"><div class="eyebrow">After watching</div><h2>What stood out to you?</h2>
+<label for="collective">What did these examples show you about what people can accomplish together that would be difficult to accomplish alone?</label><textarea id="collective"></textarea>
+<p><strong>This is collective resilience:</strong> our ability to respond and adapt grows when people connect their knowledge, resources, spaces, and actions.</p>
+<label>Which case appealed to you most?</label><div class="grid" id="cases">
+<button class="choice" data-value="Depave"><strong>🌱 Depave</strong><span class="small">Transforming shared spaces</span></button>
+<button class="choice" data-value="Pollinator habitat"><strong>🐝 Pollinator habitat</strong><span class="small">Connecting habitat across a landscape</span></button>
+<button class="choice" data-value="PDX Solarpunx"><strong>🌻 PDX Solarpunx</strong><span class="small">Building community through gardening</span></button></div>
+<label for="why">What about it interested you?</label><textarea id="why"></textarea>
+<label>What kinds of action would you like to explore next? <span class="small">(Choose as many as fit.)</span></label><div class="grid" id="interests">
+<button class="choice" data-value="Pollinators & habitat"><strong>🐝 Pollinators & habitat</strong></button><button class="choice" data-value="Climate-resilient planting"><strong>🌿 Climate-resilient planting</strong></button><button class="choice" data-value="Transforming shared spaces"><strong>🏘️ Transforming shared spaces</strong></button><button class="choice" data-value="Water & climate challenges"><strong>💧 Water & climate challenges</strong></button><button class="choice" data-value="Trees, shade & heat"><strong>🌳 Trees, shade & heat</strong></button><button class="choice" data-value="Building community"><strong>🤝 Building community</strong></button><button class="choice" data-value="Sharing plants, knowledge & resources"><strong>🌱 Sharing plants, knowledge & resources</strong></button><button class="choice" data-value="Community science"><strong>🔎 Community science</strong></button>
+</div><button class="btn" id="continue">Save & continue to Activity 7.2 →</button><span class="saved" id="status" aria-live="polite"></span></section>
+</main><script>
+const KEY="module7_activity7_1_collective_resilience", JOURNAL="climateResilientGardenJournal";let chosenCase="",interests=[];
+function toggleGroup(parent,arr,single=false){document.querySelectorAll(parent+" .choice").forEach(b=>b.onclick=()=>{if(single){document.querySelectorAll(parent+" .choice").forEach(x=>x.classList.remove("on"));b.classList.add("on");chosenCase=b.dataset.value}else{const v=b.dataset.value,i=arr.indexOf(v);if(i>=0){arr.splice(i,1);b.classList.remove("on")}else{arr.push(v);b.classList.add("on")}}})}
+toggleGroup("#cases",[],true);toggleGroup("#interests",interests,false);
+function save(){const d={module:7,activity:"7.1",title:"What Can We Accomplish Together?",completedAt:new Date().toISOString(),collectiveReflection:document.getElementById("collective").value,preferredCase:chosenCase,whyItAppealed:document.getElementById("why").value,interests};localStorage.setItem(KEY,JSON.stringify(d));let j={};try{{j=JSON.parse(localStorage.getItem(JOURNAL)||"{{}}")}}catch(e){{}}if(!j.entries)j.entries={{}};j.entries[KEY]=d;j.updatedAt=d.completedAt;localStorage.setItem(JOURNAL,JSON.stringify(j));return d}
+document.getElementById("continue").onclick=()=>{{save();location.href="../7.2-community-connection/index.html"}};
+</script></body></html>
