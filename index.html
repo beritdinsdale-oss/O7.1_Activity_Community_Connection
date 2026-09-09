@@ -74,6 +74,32 @@ document.querySelectorAll("#interests .choice").forEach(button => {
   });
 });
 
-function save(){const d={module:7,activity:"7.1",title:"What Can We Accomplish Together?",completedAt:new Date().toISOString(),collectiveReflection:document.getElementById("collective").value,preferredCase:chosenCase,whyItAppealed:document.getElementById("why").value,interests};localStorage.setItem(KEY,JSON.stringify(d));let j={};try{{j=JSON.parse(localStorage.getItem(JOURNAL)||"{{}}")}}catch(e){{}}if(!j.entries)j.entries={{}};j.entries[KEY]=d;j.updatedAt=d.completedAt;localStorage.setItem(JOURNAL,JSON.stringify(j));return d}
-document.getElementById("continue").onclick=()=>{{save();location.href="../7.2-community-connection/index.html"}};
+function save(){
+  const d={
+    module:7,
+    activity:"7.1",
+    title:"What Can We Accomplish Together?",
+    completedAt:new Date().toISOString(),
+    collectiveReflection:document.getElementById("collective").value,
+    preferredCase:chosenCase,
+    whyItAppealed:document.getElementById("why").value,
+    interests:[...interests]
+  };
+  localStorage.setItem(KEY,JSON.stringify(d));
+  let j={};
+  try {
+    j=JSON.parse(localStorage.getItem(JOURNAL)||"{}");
+  } catch(e) {
+    j={};
+  }
+  if(!j.entries) j.entries={};
+  j.entries[KEY]=d;
+  j.updatedAt=d.completedAt;
+  localStorage.setItem(JOURNAL,JSON.stringify(j));
+  return d;
+}
+document.getElementById("continue").addEventListener("click", function(){
+  save();
+  location.href="../7.2-community-connection/index.html";
+});
 </script></body></html>
