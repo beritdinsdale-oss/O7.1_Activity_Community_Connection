@@ -8,7 +8,7 @@ h1,h2{font-family:Georgia,serif;color:#314f3b}h1{font-size:clamp(2.3rem,5vw,4rem
 label{font-weight:750;display:block;margin:15px 0 8px}textarea,input{width:100%;padding:11px;border:2px solid #b8b09c;border-radius:9px;font:inherit;background:#fff}textarea{min-height:110px}.finish{background:var(--blue)}button.btn,a.btn{display:inline-block;background:var(--green);color:#fff;border:0;border-radius:999px;padding:12px 20px;font-weight:750;font-size:1rem;text-decoration:none;cursor:pointer;margin-top:12px}.path{background:#f7f4ea;border-radius:14px;padding:16px;margin:12px 0}.saved{font-weight:700;margin-left:10px}.hidden{display:none}
 @media(max-width:700px){main{padding:15px}.grid{grid-template-columns:1fr}.hero,.card,.finish{padding:20px}}
 </style></head><body><main>
-<section class="hero"><div class="eyebrow">Module 7 · Activity 7.1</div><h1>What can we accomplish together?</h1><p>You've spent this course thinking about choices in individual gardens. Now zoom out. Watch three examples of people responding together to climate and ecological challenges.</p><p> Notice what people accomplish together—and which kind of action draws you in.</p></section>
+<section class="hero"><div class="eyebrow">Module 7</div><h1>What can we accomplish together?</h1><p>You've spent this course thinking about choices in individual gardens. Now zoom out. Watch three examples of people responding together to climate and ecological challenges.</p><p> Notice what people accomplish together—and which kind of action draws you in.</p></section>
 
 <section class="card"><div class="casehead"><div class="icon">🌱</div><div><div class="eyebrow">Case 1 · Portland</div><h2>From pavement to living space</h2></div></div><p>Depave brings people together to turn unnecessary pavement into greener, more resilient places.</p><iframe class="video" src="https://player.vimeo.com/video/995207088" title="Depave: This Garden Was a Parking Lot" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe><p class="small"><a href="https://vimeo.com/995207088" target="_blank" rel="noopener">Video not playing? Open it in a new tab.</a></p></section>
 
@@ -59,7 +59,7 @@ label{font-weight:750;display:block;margin:15px 0 8px}textarea,input{width:100%;
 
 <div id="step3" class="hidden" style="margin-top:30px;padding-top:22px;border-top:2px dashed #c9b98c">
   <h2>3. Where would you most like to take action?</h2>
-  <p class="small">Choose one or two climate or gardening issues. In Activity 7.2, we'll combine these with what interested you about the case study.</p>
+  <p class="small">Choose one or two climate or gardening issues. We'll combine these with what interested you about the case study to help find community connections that may be a good fit.</p>
   <div class="grid" id="interests">
     <button type="button" class="choice" data-value="Pollinators & habitat"><strong>🐝 Pollinators & habitat</strong></button>
     <button type="button" class="choice" data-value="Climate-resilient planting"><strong>🌿 Climate-resilient planting</strong></button>
@@ -71,7 +71,7 @@ label{font-weight:750;display:block;margin:15px 0 8px}textarea,input{width:100%;
   </div>
 </div>
 
-<button type="button" class="btn hidden" id="continue">Save & continue to Activity 7.2 →</button>
+<a class="btn hidden" id="continue" href="https://beritdinsdale-oss.github.io/O7.2_Assessment-Activity_Community_Connections/">Continue →</a>
 <span class="saved" id="status" aria-live="polite"></span>
 </section>
 </main><script>
@@ -145,9 +145,11 @@ function save(){
  const d={module:7,activity:"7.1",title:"What Can We Accomplish Together?",completedAt:new Date().toISOString(),collectiveReflection:document.getElementById("collective").value,preferredCase:chosenCase,caseQualities:selectedQualities(),interests:[...interests]};
  localStorage.setItem(KEY,JSON.stringify(d));let j={};try{j=JSON.parse(localStorage.getItem(JOURNAL)||"{}")}catch(e){j={}}if(!j.entries)j.entries={};j.entries[KEY]=d;j.updatedAt=d.completedAt;localStorage.setItem(JOURNAL,JSON.stringify(j));return d
 }
-document.getElementById("continue").addEventListener("click",()=>{
-  if(!chosenCase || selectedQualities().length===0 || interests.length===0) return;
+document.getElementById("continue").addEventListener("click",(event)=>{
+  if(!chosenCase || selectedQualities().length===0 || interests.length===0){
+    event.preventDefault();
+    return;
+  }
   save();
-  location.href="https://beritdinsdale-oss.github.io/O7.2_Assessment-Activity_Community_Connections/";
 });
 </script></body></html>
