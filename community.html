@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>this activity — Find Your Community Connection</title>
+<style>
+:root{--paper:#fffdf6;--ink:#26342d;--muted:#617067;--leaf:#3e6b4f;--line:#d8cfb5;--soft:#f4efdf;--accent:#a8562a;--sky:#eaf4f2}
+*{box-sizing:border-box}body{margin:0;background:#f4f0e5;color:var(--ink);font:18px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+main{max-width:980px;margin:auto;padding:28px 18px 70px}.paper{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:clamp(22px,4vw,46px);box-shadow:0 12px 34px #544b3820}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:800;color:var(--accent)}h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.05;margin:.2em 0}h2{font-size:1.45rem;margin:.4em 0}.lead{font-size:1.12rem;max-width:760px}.small{font-size:.92rem;color:var(--muted)}
+.card{margin-top:26px;padding:24px;border:1px solid var(--line);border-radius:20px;background:#fff}.match{background:var(--sky);border-left:6px solid var(--leaf)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.chip{background:#fff;border:1px solid #b9c9c1;border-radius:999px;padding:6px 11px;font-size:.9rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.resource{display:block;text-decoration:none;color:inherit;background:#fff;border:2px solid #d9d1bb;border-radius:16px;padding:17px;transition:.15s}.resource:hover,.resource:focus{border-color:var(--leaf);transform:translateY(-1px)}.resource strong{display:block;color:var(--leaf);font-size:1.05rem}.resource span{display:block;margin-top:5px;font-size:.9rem;color:var(--muted)}
+label{display:block;font-weight:750;margin:18px 0 7px}input,textarea{width:100%;font:inherit;border:2px solid #cfc7af;border-radius:12px;padding:12px;background:white}textarea{min-height:105px;resize:vertical}
+.btn{display:inline-block;border:0;border-radius:999px;padding:13px 19px;font:inherit;font-weight:800;cursor:pointer;background:var(--leaf);color:#fff;text-decoration:none;margin-top:20px}.btn.secondary{background:#fff;color:var(--leaf);border:2px solid var(--leaf);margin-right:8px}.hidden{display:none!important}
+.note{background:var(--soft);padding:14px 16px;border-radius:12px}.complete{margin-top:28px;padding:26px;border-radius:20px;background:#edf5e9;border:1px solid #bdd0b4}
+@media(max-width:600px){body{font-size:17px}.paper{padding:22px 16px}}
+
+.case-context{background:#f7e9dc;border:1px solid #d8b18f;border-radius:14px;padding:14px 16px;margin-top:16px}
+.case-context strong{color:#7b4527}
+.how-context{background:#e8f1ec;border:1px solid #abc3b4;border-radius:14px;padding:14px 16px;margin-top:14px}
+.how-context>strong{color:#315c45}
+.action-context{background:#e9f0f6;border:1px solid #afc4d5;border-radius:14px;padding:14px 16px;margin-top:14px}
+.action-context>strong{color:#355d78}
+.case-context .chip{border-color:#d8b18f;background:#fffaf5}
+.how-context .chip{border-color:#abc3b4;background:#fafffc}
+.action-context .chip{border-color:#afc4d5;background:#fbfdff}
+</style>
+</head>
+<body><main><div class="paper">
+<div class="eyebrow">Module 7</div>
+<h1>Find Your Community Connection</h1>
+<p class="lead">You have seen a few ways people can work together. Now use what interested you to find a real group, project, program, or network you might want to learn more about.</p>
+<a class="btn secondary" href="index.html">← Back</a>
+
+<section class="card match" id="matchCard">
+<h2>Your starting point</h2><p class="small">We’ll use both <strong>how you want to participate</strong> and <strong>what you want to work on</strong> to suggest possible connections.</p>
+<div id="autoMatch"></div>
+</section>
+
+<section class="card">
+<h2>Explore groups and projects</h2>
+<p>These starting points are matched to both the <strong>kind of collective action</strong> that interested you and the <strong>issue</strong> you selected. The note on each card shows why it may be a useful fit. Explore as many as you like. Links open in a new tab.</p>
+<div class="grid" id="resources"></div>
+<p class="note" id="generalNote"></p>
+</section>
+
+<section class="card">
+<h2>Record the connection that interested you most</h2>
+<p>Choose <strong>one</strong> group, project, program, or network that you would be most interested in learning more about or connecting with.</p>
+<label for="name">Which group, project, program, or network did you choose?</label>
+<input id="name" autocomplete="off">
+<label for="work">What are people doing together?</label>
+<textarea id="work"></textarea>
+<label for="personal">What interests you about this group or its work?</label>
+<textarea id="personal"></textarea>
+<button type="button" class="btn" id="save">Save to Garden Journal</button>
+<span id="status" class="small" aria-live="polite"></span>
+</section>
+
+<section class="complete hidden" id="complete" tabindex="-1">
+<div class="eyebrow">Activity complete</div>
+<h2>You found a connection</h2>
+<p>Climate-resilient gardening does not have to happen one garden at a time. The group or project you found is one possible way to stay connected, learn from others, and contribute to a larger effort.</p>
+<p>Your connection has been saved to your Garden Journal.</p>
+<a class="btn secondary" href="index.html">← Back</a>
+<a class="btn" href="https://canvas.oregonstate.edu/courses/2038983/modules" target="_top">Return to module</a>
+</section>
+</div></main>
+<script>
+const SOURCE="module7_activity7_1_collective_resilience";
+const KEY="module7_activity7_2_community_connection";
+const JOURNAL="climateResilientGardenJournal";
+let a71=null; try{a71=JSON.parse(localStorage.getItem(SOURCE)||"null")}catch(e){}
+
+const resources=[
+ {name:"Oregon Climate Action Hub",url:"https://orclimatehub.org/archive/organizations/",desc:"A broad Oregon directory you can filter by region and climate solution.",how:["grassroots","justice","inclusive","partners","relationships","informal","sharing"],topics:["Pollinators & habitat","Climate-resilient planting","Transforming shared spaces","Water & climate challenges","Trees, shade & heat","Soil & water retention","Food & garden resilience"]},
+ {name:"Oregon Just Transition Alliance",url:"https://www.ojta.org/our-members",desc:"A network of frontline organizations working on climate justice and community-led solutions.",how:["justice","inclusive","grassroots","relationships","partners"],topics:["Transforming shared spaces","Water & climate challenges","Trees, shade & heat","Food & garden resilience","Climate-resilient planting"]},
+ {name:"Unite Oregon — Community Resilience Hubs",url:"https://www.uniteoregon.org/community-resilience-hubs",desc:"Community spaces that can combine gardens, resource sharing, preparedness, and neighborhood connection.",how:["inclusive","sharing","relationships","grassroots","neighborhood","informal"],topics:["Transforming shared spaces","Food & garden resilience","Trees, shade & heat","Water & climate challenges"]},
+ {name:"Network of Oregon Watershed Councils",url:"https://www.oregonwatersheds.org/who-we-are/oregon-watershed-councils/",desc:"Find locally based councils working together on habitat, water, restoration, and monitoring.",how:["science","landscape","habitat","data","goal","partners","hands-on"],topics:["Pollinators & habitat","Water & climate challenges","Soil & water retention","Climate-resilient planting"]},
+ {name:"Coalition of Oregon Land Trusts",url:"https://oregonlandtrusts.org/resources/find-a-land-trust/",desc:"Find land trusts across Oregon working on conservation, habitat, and community stewardship.",how:["habitat","landscape","partners","goal","hands-on"],topics:["Pollinators & habitat","Climate-resilient planting","Water & climate challenges","Trees, shade & heat","Soil & water retention"]},
+ {name:"Oregon Health Authority — Community Climate Resilience",url:"https://www.oregon.gov/oha/ph/healthyenvironments/climatechange/pages/community-based-organizations-.aspx",desc:"Community-based organizations working on climate resilience, health, and equity.",how:["justice","inclusive","partners","neighborhood"],topics:["Trees, shade & heat","Water & climate challenges","Food & garden resilience","Transforming shared spaces"]},
+];
+
+function tagsForQuality(q){
+ q=(q||"").toLowerCase();
+ if(q.startsWith("other:")) return [];
+ const map=[
+  ["justice","justice"],["queer","inclusive"],["inclusive","inclusive"],["community science","science"],
+  ["landscape","landscape"],["restoring habitat","habitat"],["observation","data"],["shared ecological","goal"],
+  ["shared or public","shared"],["hands-on","hands-on"],["neighborhood","neighborhood"],["community partners","partners"],
+  ["grassroots","grassroots"],["sharing plants","sharing"],["relationships","relationships"],["informal","informal"]
+ ];
+ return map.filter(x=>q.includes(x[0])).map(x=>x[1]);
+}
+function esc(s){const d=document.createElement("div");d.textContent=String(s||"");return d.innerHTML}
+
+const match=document.getElementById("autoMatch");
+const note=document.getElementById("generalNote");
+let qualities=[],topics=[],preferred="";
+if(a71){
+ qualities=a71.caseQualities||[];
+ topics=a71.interests||[];
+ preferred=a71.preferredCase||"";
+ match.innerHTML='<p>Your earlier selections are automatically carried forward here when you use the same browser.</p>'+
+   (preferred?'<div class="case-context"><strong>Case that stood out to you</strong><div class="chips"><span class="chip">'+esc(preferred)+'</span></div></div>':'')+
+   '<div class="how-context"><strong>How you’d like to participate</strong>'+
+   '<p class="small" style="margin:.25em 0 .5em">What appealed to you about the way people were working together.</p>'+
+   '<div class="chips">'+qualities.map(x=>'<span class="chip">'+esc(x)+'</span>').join("")+'</div></div>'+
+   '<div class="action-context"><strong>Action areas you care about</strong>'+
+   '<p class="small" style="margin:.25em 0 .5em">The climate or gardening issues you’d most like to work on with others.</p>'+
+   '<div class="chips">'+topics.map(x=>'<span class="chip">'+esc(x)+'</span>').join("")+'</div></div>';
+}else{
+ match.innerHTML='<p>Your earlier selections did not auto-populate. That’s okay—use the broad starting points below to explore organizations and networks with approaches similar to the case studies.</p>';
+}
+
+let howTags=qualities.flatMap(tagsForQuality);
+const hasOther=qualities.some(q=>q.toLowerCase().startsWith("other:"));
+const scored=resources.map(r=>{
+ let how=r.how.filter(t=>howTags.includes(t)).length;
+ let topic=r.topics.filter(t=>topics.includes(t)).length;
+ return {...r,score:how*3+topic*2};
+}).sort((a,b)=>b.score-a.score);
+
+const chosen=(a71 ? scored.filter(r=>r.score>0).slice(0,6) : resources.slice(0,6));
+function whyThisFits(r){
+  if(!a71) return "";
+  const matchedQualities=qualities.filter(q=>{
+    if(q.toLowerCase().startsWith("other:")) return false;
+    return tagsForQuality(q).some(t=>r.how.includes(t));
+  });
+  const matchedTopics=topics.filter(t=>r.topics.includes(t));
+
+  if(matchedQualities.length && matchedTopics.length){
+    return "Why this may fit: Connects your interest in "+matchedQualities.slice(0,2).join(" and ")+" with "+matchedTopics.slice(0,2).join(" and ")+".";
+  }
+  if(matchedTopics.length){
+    return "Why this may fit: Works on "+matchedTopics.slice(0,2).join(" and ")+" and has an approach related to the case studies you explored.";
+  }
+  if(matchedQualities.length){
+    return "Why this may fit: Shares an approach you were drawn to: "+matchedQualities.slice(0,2).join(" and ")+".";
+  }
+  if(hasOther){
+    return "Why this may fit: Offers a broader starting point with an approach similar to "+preferred+".";
+  }
+  return "";
+}
+
+document.getElementById("resources").innerHTML=chosen.map(r=>{
+  const why=whyThisFits(r);
+  return '<a class="resource" href="'+r.url+'" target="_blank" rel="noopener">'+
+    '<strong>'+esc(r.name)+' ↗</strong>'+
+    '<span>'+esc(r.desc)+'</span>'+
+    (why?'<span style="margin-top:10px;padding-top:10px;border-top:1px dashed #d8cfb5;color:#26342d"><b>'+esc(why)+'</b></span>':'')+
+    '</a>';
+}).join("");
+
+if(hasOther){
+ note.textContent="Because you chose “Other,” these suggestions also include broad directories and groups with approaches similar to the case study you selected.";
+}else if(a71){
+ note.textContent="These are starting points, not a complete list. A good match may be local, county-wide, regional, statewide, or online.";
+}else{
+ note.textContent="Explore one or more starting points, then record the single connection that interests you most.";
+}
+
+document.getElementById("save").addEventListener("click",()=>{
+ const name=document.getElementById("name").value.trim(),work=document.getElementById("work").value.trim(),personal=document.getElementById("personal").value.trim();
+ if(!name||!work||!personal){document.getElementById("status").textContent=" Please complete all three responses before saving.";return}
+ const d={module:7,activity:"7.2",title:"Find Your Community Connection",completedAt:new Date().toISOString(),
+ interestsFromActivity71:topics,preferredCaseFromActivity71:preferred,caseQualitiesFromActivity71:qualities,
+ connection:{name,collectiveWork:work,personalConnection:personal}};
+ localStorage.setItem(KEY,JSON.stringify(d));
+ let j={};try{j=JSON.parse(localStorage.getItem(JOURNAL)||"{}")}catch(e){j={}}
+ if(!j.entries)j.entries={};j.entries[KEY]=d;j.updatedAt=d.completedAt;localStorage.setItem(JOURNAL,JSON.stringify(j));
+ document.getElementById("status").textContent=" Saved.";
+ const c=document.getElementById("complete");c.classList.remove("hidden");c.focus();c.scrollIntoView({behavior:"smooth",block:"start"});
+});
+</script>
+</body></html>
